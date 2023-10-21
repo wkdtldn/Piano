@@ -1,143 +1,227 @@
 <template>
-  <div id="piano">
-    <div id="piano-container">
-      <li>
-        <button class="white" @click="play(1)">도</button
-        ><button class="black" @click="play(1.5)">도#</button>
-      </li>
+  <div id="app">
+    <div class="center_box">
+      <h2>Vue.js Piano</h2>
+      <button @click="start()" v-if="test == true">start</button>
+      <button @click="stop()">stop</button>
+      <div style="height: 20px"></div>
+      <div class="keyboard">
+        <div class="pianokey" v-for="(item, index) in pianoKeys">
+          <span
+            v-if="item.type == 'white'"
+            class="white"
+            type="button"
+            :index="index"
+            @click="play(item.code)"
+          ></span>
+          <span
+            v-if="item.type == 'black'"
+            class="black"
+            type="button"
+            @click="play(item.code)"
+          ></span>
+          <div class="pianotext">
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <v-btn class="white" @click="play(1)">도</v-btn>
-  <v-btn class="black" @click="play(1.5)">도#</v-btn>
-  <v-btn @click="play(2)">레</v-btn>
-  <v-btn @click="play(2.5)">레#</v-btn>
-  <v-btn @click="play(3)">미</v-btn>
-  <v-btn @click="play(4)">파</v-btn>
-  <v-btn @click="play(4.5)">파#</v-btn>
-  <v-btn @click="play(5)">솔</v-btn>
-  <v-btn @click="play(5.5)">솔#</v-btn>
-  <v-btn @click="play(6)">라</v-btn>
-  <v-btn @click="play(6.5)">라#</v-btn>
 </template>
-<!-- [1, 1.5, 2, 2.5,3,4,4.5,5,5.5,6,6.5,7,8,8.5,9,9.5,10,11,11.5,12,12.5,13,13.5,14,15] -->
 <script>
 export default {
+  created() {
+    window.onkeydown = (q) => {
+      this.keyPress(q.key);
+      this.kbPlay(q.key);
+    };
+    window.onkeyup = (q) => {
+      this.keyNotPress(q.key);
+    };
+  },
+  data() {
+    return {
+      autoKeys: [
+        3, 2, 1, 2, 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 2, 1, 2, 3, 3, 3, 2, 2, 3, 2,
+        1,
+      ],
+      pianoKeys: [
+        { code: 1, type: "white", keyboard: "q", name: "도" },
+        { code: 1.5, type: "black", keyboard: "2", name: "도#" },
+        { code: 2, type: "white", keyboard: "w", name: "레" },
+        { code: 2.5, type: "black", keyboard: "3", name: "레#" },
+        { code: 3, type: "white", keyboard: "e", name: "미" },
+        { code: 4, type: "white", keyboard: "r", name: "파" },
+        { code: 4.5, type: "black", keyboard: "5", name: "파#" },
+        { code: 5, type: "white", keyboard: "t", name: "솔" },
+        { code: 5.5, type: "black", keyboard: "6", name: "솔#" },
+        { code: 6, type: "white", keyboard: "y", name: "라" },
+        { code: 6.5, type: "black", keyboard: "7", name: "라#" },
+        { code: 7, type: "white", keyboard: "u", name: "시" },
+        { code: 8, type: "white", keyboard: "z", name: "도" },
+        { code: 8.5, type: "black", keyboard: "s", name: "도#" },
+        { code: 9, type: "white", keyboard: "x", name: "레" },
+        { code: 9.5, type: "black", keyboard: "d", name: "레#" },
+        { code: 10, type: "white", keyboard: "c", name: "미" },
+        { code: 11, type: "white", keyboard: "v", name: "파" },
+        { code: 11.5, type: "black", keyboard: "g", name: "파#" },
+        { code: 12, type: "white", keyboard: "b", name: "솔" },
+        { code: 12.5, type: "black", keyboard: "h", name: "솔#" },
+        { code: 13, type: "white", keyboard: "n", name: "라" },
+        { code: 13.5, type: "black", keyboard: "j", name: "라#" },
+        { code: 14, type: "white", keyboard: "m", name: "시" },
+        { code: 15, type: "white", keyboard: ",", name: "도" },
+      ],
+      index: 0,
+      test: true,
+      test_func: null,
+    };
+  },
   methods: {
-    play(index) {
+    start() {
+      console.log("start!");
+      this.test = true;
+      this.test_func = setInterval(() => {
+        this.log(true);
+      }, 500);
+    },
+    stop() {
+      console.log("stop!!");
+      this.test = false;
+      clearInterval(this.test_func);
+    },
+    log(x) {
+      console.log("pop!");
+    },
+    keyPress(key) {
+      const test = document.querySelectorAll("span");
+      this.pianoKeys.forEach((item, index) => {
+        if (item.keyboard === key) {
+          if (item.type === "white") test[index].classList.add("active_white");
+          else test[index].classList.add("active_black");
+        }
+      });
+    },
+    keyNotPress(key) {
+      const test = document.querySelectorAll("span");
+      this.pianoKeys.forEach((item, index) => {
+        if (item.keyboard === key) {
+          if (item.type === "white")
+            test[index].classList.remove("active_white");
+          else test[index].classList.remove("active_black");
+        }
+      });
+    },
+    play(code) {
       var audio = new Audio(
-        "https://awiclass.monoame.com/pianosound/set/" + index + ".wav"
+        "https://awiclass.monoame.com/pianosound/set/" + code + ".wav"
       );
       audio.play();
+    },
+    kbPlay(key) {
+      let keyIndex;
+      this.pianoKeys.every((item) => {
+        if (item.keyboard === key) {
+          keyIndex = item.code;
+          var audio = new Audio(
+            "https://awiclass.monoame.com/pianosound/set/" + keyIndex + ".wav"
+          );
+          audio.play();
+          return false;
+        } else {
+          return true;
+        }
+      });
     },
   },
 };
 </script>
 <style>
+* {
+  backface-visibility: hidden;
+}
+
+html,
 body {
-  background: mistyrose;
-  font-family: "Great Vibes", cursive;
-}
-#piano {
-  margin-top: 10% !important;
-}
-#piano {
-  margin-top: 10%;
-  width: 600px;
-  height: 300px;
-  margin: auto;
-  border-radius: 20px 20px 0 0;
-  overflow: hidden;
-  background: -webkit-linear-gradient(#111, #444);
-  background: -o-linear-gradient(#222, #444);
-  background: -moz-linear-gradient(#222, #444);
-  background: linear-gradient(#1e1d1d, #000);
-}
-.light {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ff7700;
-  float: left;
-  margin-right: 10px;
-  margin-top: 25px;
-}
-.text {
-  float: left;
-  width: 10%;
-}
-.text h1 {
-  font-family: metropolis;
-  font-size: 38px;
-  color: #eee;
-  line-height: 60px;
-}
-#piano-container {
-  width: 95%;
-  height: 230px;
-  background: #fff;
-  margin: 60px auto 0 auto;
-}
-#piano-container li {
-  width: 14.28%;
-  height: 100%;
-  float: left;
-  list-style-type: none;
-  position: relative;
-}
-.white {
   width: 100%;
   height: 100%;
-  float: left;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-  position: relative;
-  z-index: 1;
-  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
 }
-button:focus {
-  outline: none;
+
+h2 {
+  margin-bottom: 30px;
+}
+
+.center_box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+}
+
+.keyboard {
+  box-shadow: 0px 0px 40px -5px rgba(0, 0, 0, 0.4);
+  display: inline-block;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.pianokey {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+}
+
+.white {
+  position: absolute;
+  width: 44px;
+  height: 300px;
+  border: solid 1px #eee;
+  display: inline-block;
+  position: relative;
+  background-color: #fff;
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  left: 0px;
+  top: 0px;
+  z-index: 0;
+  transform: translate(-3px, -3px);
+  transition: 0.1s;
 }
 .white:active {
-  box-shadow: -1px 0 15px rgba(0, 0, 0, 0.7) inset;
-  -webkit-box-shadow: -1px 0 15px rgba(0, 0, 0, 0.7) inset;
-  -moz-box-shadow: -1px 0 15px rgba(0, 0, 0, 0.7) inset;
-  -ms-box-shadow: -1px 0 15px rgba(0, 0, 0, 0.7) inset;
+  transform: translate(0px, 0px);
+  background-color: #eee;
 }
-.white:active #goat {
-  background-image: url(../img/Goat.gif);
-}
+
 .black {
-  position: absolute;
-  border: none;
-  z-index: 2;
-  width: 70%;
-  height: 120px;
-  background: #000;
-  right: -35%;
-  box-shadow: 1px 0 #111, 0 2px 0 #111, 0 3px 0 #333, 0 4px 0 #333, 0 5px 0 #333,
-    0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
-    0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2),
-    0 20px 20px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: 1px 0 #777, 0 2px 0 #777, 0 3px 0 #666, 0 4px 0 #555,
-    0 5px 0 #444, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
-    0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2),
-    0 20px 20px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 1px 0 #333, 0 2px 0 #555, 0 3px 0 #555, 0 4px 0 #666,
-    0 5px 0 #777, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
-    0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2),
-    0 20px 20px rgba(0, 0, 0, 0.15);
-  -ms-box-shadow: 1px 0 #333, 0 2px 0 #555, 0 3px 0 #555, 0 4px 0 #666,
-    0 5px 0 #777, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
-    0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2),
-    0 20px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+  width: 22px;
+  height: 165px;
+  margin-left: -11px;
+  margin-right: -11px;
+  background-color: #585858;
+  z-index: 20;
+  transform: translate(-3px, -3px);
+  transition: 0.1s;
 }
 .black:active {
-  box-shadow: 1px 0 #777, 0 2px 0 #777, 0 3px 0 #666, 0 4px 0 #555;
-  -webkit-box-shadow: 1px 0 #555, 0 1px 0 #555, 0 1px 0 #444, 0 2px 0 #333;
-  -moz-box-shadow: 1px 0 #111, 0 2px 0 #222, 0 3px 0 #222;
-  -ms-box-shadow: 1px 0 #111, 0 2px 0 #222, 0 3px 0 #222;
+  transform: translate(0px, 0px);
+  background-color: #3f3f3f;
+}
+.pianotext {
+  width: 99%;
+  position: absolute;
+  bottom: 15px;
+  pointer-events: none;
+}
+.active_black {
+  transform: translate(0px, 0px);
+  background-color: #3f3f3f;
+}
+.active_white {
+  transform: translate(0px, 0px);
+  background-color: #eee;
 }
 </style>
