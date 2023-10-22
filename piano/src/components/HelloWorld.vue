@@ -2,8 +2,8 @@
   <div id="app">
     <div class="center_box">
       <h2>Vue.js Piano</h2>
-      <button @click="start()" v-if="test == true">start</button>
-      <button @click="stop()">stop</button>
+      <button @click="test_func()">play/stop</button>
+      <!-- <button @click="stop()">stop</button> -->
       <div style="height: 20px"></div>
       <div class="keyboard">
         <div class="pianokey" v-for="(item, index) in pianoKeys">
@@ -42,8 +42,140 @@ export default {
   data() {
     return {
       autoKeys: [
-        3, 2, 1, 2, 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 2, 1, 2, 3, 3, 3, 2, 2, 3, 2,
-        1,
+        // 1 line
+        { key: 10, interval: 2000 },
+        { key: 9, interval: 2000 },
+        { key: 8, interval: 2000 },
+        { key: 7, interval: 2000 },
+        { key: 6, interval: 2000 },
+        { key: 5, interval: 2000 },
+        { key: 6, interval: 2000 },
+        { key: 7, interval: 2000 },
+        // 도돌임표
+        { key: 10, interval: 2000 },
+        { key: 9, interval: 2000 },
+        { key: 8, interval: 2000 },
+        { key: 7, interval: 2000 },
+        { key: 6, interval: 2000 },
+        { key: 5, interval: 2000 },
+        { key: 6, interval: 2000 },
+        { key: 7, interval: 2000 },
+        // 2 line
+        { key: 10, interval: 1000 },
+        { key: 8, interval: 500 },
+        { key: 9, interval: 500 },
+        { key: 10, interval: 1000 },
+        { key: 9, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 9, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 9, interval: 500 },
+        { key: 10, interval: 500 },
+        { key: 9, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 1000 },
+        { key: 6, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 1000 },
+        { key: 3, interval: 500 },
+        { key: 4, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 6, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 4, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 500 },
+        // 3 line
+        { key: 6, interval: 1000 },
+        { key: 8, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 6, interval: 1000 },
+        { key: 5, interval: 500 },
+        { key: 4, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 4, interval: 500 },
+        { key: 3, interval: 500 },
+        { key: 4, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 6, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 6, interval: 1000 },
+        { key: 8, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 1000 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 6, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 9, interval: 500 },
+        { key: 10, interval: 500 },
+        { key: 11, interval: 500 },
+        // 4 line
+        { key: 12, interval: 1000 },
+        { key: 10, interval: 500 },
+        { key: 11, interval: 500 },
+        { key: 12, interval: 1000 },
+        { key: 10, interval: 500 },
+        { key: 11, interval: 500 },
+        { key: 12, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 6, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 9, interval: 500 },
+        { key: 10, interval: 500 },
+        { key: 11, interval: 500 },
+        { key: 10, interval: 1000 },
+        { key: 8, interval: 500 },
+        { key: 9, interval: 500 },
+        { key: 10, interval: 1000 },
+        { key: 3, interval: 500 },
+        { key: 4, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 6, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 4, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 500 },
+        // 도돌임표
+        { key: 12, interval: 1000 },
+        { key: 10, interval: 500 },
+        { key: 11, interval: 500 },
+        { key: 12, interval: 1000 },
+        { key: 10, interval: 500 },
+        { key: 11, interval: 500 },
+        { key: 12, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 6, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 9, interval: 500 },
+        { key: 10, interval: 500 },
+        { key: 11, interval: 500 },
+        { key: 10, interval: 1000 },
+        { key: 8, interval: 500 },
+        { key: 9, interval: 500 },
+        { key: 10, interval: 1000 },
+        { key: 3, interval: 500 },
+        { key: 4, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 6, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 4, interval: 500 },
+        { key: 5, interval: 500 },
+        { key: 8, interval: 500 },
+        { key: 7, interval: 500 },
+        { key: 8, interval: 500 },
       ],
       pianoKeys: [
         { code: 1, type: "white", keyboard: "q", name: "도" },
@@ -73,26 +205,65 @@ export default {
         { code: 15, type: "white", keyboard: ",", name: "도" },
       ],
       index: 0,
-      test: true,
-      test_func: null,
+      // test: true,
+      test_f: null,
     };
   },
   methods: {
-    start() {
-      console.log("start!");
-      this.test = true;
-      this.test_func = setInterval(() => {
-        this.log(true);
-      }, 500);
+    test_func() {
+      while (this.index != this.autoKeys[this.index].length) {
+        this.play(this.autoKeys[this.index].key);
+        this.animation(this.autoKeys[this.index].key);
+        this.index++;
+        setTimeout(console.log(this.index), this.autoKeys[this.index].interval);
+      }
     },
-    stop() {
-      console.log("stop!!");
-      this.test = false;
-      clearInterval(this.test_func);
+    animation(code) {
+      this.pianoKeys.forEach((item) => {
+        if (code === item.code) {
+          this.keyPress(item.keyboard);
+          setTimeout(() => {
+            this.keyNotPress(item.keyboard);
+          }, this.autoKeys[this.index].interval);
+        }
+      });
     },
-    log(x) {
-      console.log("pop!");
-    },
+    // start() {
+    //   if (this.test === true) {
+    //     console.log("start!");
+    //     this.test = false;
+    //     var interval_func = setInterval(() => {
+    //       this.log(
+    //         this.index,
+    //         this.autoKeys[this.index].key,
+    //         this.autoKeys[this.index].interval
+    //       );
+    //       if (this.index === this.autoKeys.length) {
+    //         console.log(this.index, this.autoKeys.length);
+    //         clearInterval(interval_func);
+    //         console.log("finish");
+    //       }
+    //     }, this.autoKeys[this.index].interval);
+
+    //     this.test = false;
+    //   } else {
+    //     console.log("stop!");
+    //     this.test = true;
+    //     clearInterval(interval);
+    //   }
+    // },
+    // log(x, code, timeout) {
+    //   this.play(this.autoKeys[x].key);
+    //   this.pianoKeys.forEach((item) => {
+    //     if (code == item.code) {
+    //       this.keyPress(item.keyboard);
+    //       setTimeout(() => {
+    //         this.keyNotPress(item.keyboard);
+    //       }, timeout);
+    //     }
+    //   });
+    //   this.index++;
+    // },
     keyPress(key) {
       const test = document.querySelectorAll("span");
       this.pianoKeys.forEach((item, index) => {
@@ -127,6 +298,7 @@ export default {
             "https://awiclass.monoame.com/pianosound/set/" + keyIndex + ".wav"
           );
           audio.play();
+          console.log(item.name);
           return false;
         } else {
           return true;
