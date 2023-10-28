@@ -2,8 +2,8 @@
   <div id="app">
     <div class="center_box">
       <h2>Vue.js Piano</h2>
-      <button @click="test_func()">play/stop</button>
-      <!-- <button @click="stop()">stop</button> -->
+      <button @click="Play()" class="pe-3">Play/Stop</button>
+      <button @click="Reset()">Reset</button>
       <div style="height: 20px"></div>
       <div class="keyboard">
         <div class="pianokey" v-for="(item, index) in pianoKeys">
@@ -204,19 +204,34 @@ export default {
         { code: 14, type: "white", keyboard: "m", name: "시" },
         { code: 15, type: "white", keyboard: ",", name: "도" },
       ],
-      index: 0,
-      // test: true,
-      test_f: null,
+      audioPlay: { status: "STOP", position: 0 },
     };
   },
   methods: {
-    test_func() {
-      while (this.index != this.autoKeys[this.index].length) {
-        this.play(this.autoKeys[this.index].key);
-        this.animation(this.autoKeys[this.index].key);
-        this.index++;
-        setTimeout(console.log(this.index), this.autoKeys[this.index].interval);
+    async Play() {
+      const wait = (timeToDelay) =>
+        new Promise((resolve) => setTimeout(resolve, timeToDelay));
+      this.audioPlay.status =
+        this.audioPlay.status == "START" ? "STOP" : "START";
+      while (this.audioPlay.position < this.autoKeys.length) {
+        console.log(this.audioPlay.position);
+        if (this.audioPlay.status != "START") {
+          break;
+        } else {
+          if (this.audioPlay.position >= this.autoKeys.length) {
+            this.audioPlay.status = "STOP";
+            break;
+          } else {
+            await this.play(this.autoKeys[this.audioPlay.position].key);
+            await wait(this.autoKeys[this.audioPlay.position].interval);
+            this.audioPlay.position++;
+          }
+        }
       }
+    },
+    async Reset() {
+      this.audioPlay.status = "RESET";
+      this.audioPlay.position = 0;
     },
     animation(code) {
       this.pianoKeys.forEach((item) => {
@@ -228,42 +243,6 @@ export default {
         }
       });
     },
-    // start() {
-    //   if (this.test === true) {
-    //     console.log("start!");
-    //     this.test = false;
-    //     var interval_func = setInterval(() => {
-    //       this.log(
-    //         this.index,
-    //         this.autoKeys[this.index].key,
-    //         this.autoKeys[this.index].interval
-    //       );
-    //       if (this.index === this.autoKeys.length) {
-    //         console.log(this.index, this.autoKeys.length);
-    //         clearInterval(interval_func);
-    //         console.log("finish");
-    //       }
-    //     }, this.autoKeys[this.index].interval);
-
-    //     this.test = false;
-    //   } else {
-    //     console.log("stop!");
-    //     this.test = true;
-    //     clearInterval(interval);
-    //   }
-    // },
-    // log(x, code, timeout) {
-    //   this.play(this.autoKeys[x].key);
-    //   this.pianoKeys.forEach((item) => {
-    //     if (code == item.code) {
-    //       this.keyPress(item.keyboard);
-    //       setTimeout(() => {
-    //         this.keyNotPress(item.keyboard);
-    //       }, timeout);
-    //     }
-    //   });
-    //   this.index++;
-    // },
     keyPress(key) {
       const test = document.querySelectorAll("span");
       this.pianoKeys.forEach((item, index) => {
