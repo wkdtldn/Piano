@@ -2,8 +2,21 @@
   <div id="app">
     <div class="center_box">
       <h2>Vue.js Piano</h2>
-      <button @click="Play()" class="pe-3">Play/Stop</button>
-      <button @click="Reset()">Reset</button>
+      <button
+        @click="Play(), (test = !test)"
+        v-if="test"
+        class="me-3 playButton rounded-lg"
+      >
+        Play
+      </button>
+      <button
+        @click="Play(), (test = !test)"
+        v-else
+        class="me-3 playButton rounded-lg"
+      >
+        Stop
+      </button>
+      <button @click="Reset()" class="playButton rounded-lg">Reset</button>
       <div style="height: 20px"></div>
       <div class="keyboard">
         <div class="pianokey" v-for="(item, index) in pianoKeys">
@@ -41,6 +54,7 @@ export default {
   },
   data() {
     return {
+      test: true,
       autoKeys: [
         // 1 line
         { key: 10, interval: 2000 },
@@ -215,6 +229,11 @@ export default {
         this.audioPlay.status == "START" ? "STOP" : "START";
       while (this.audioPlay.position < this.autoKeys.length) {
         console.log(this.audioPlay.position);
+        this.pianoKeys.forEach((item) => {
+          if (item.code === this.autoKeys[this.audioPlay.position].key) {
+            console.log(item.name);
+          }
+        });
         if (this.audioPlay.status != "START") {
           break;
         } else {
@@ -222,6 +241,7 @@ export default {
             this.audioPlay.status = "STOP";
             break;
           } else {
+            this.animation(this.autoKeys[this.audioPlay.position].key);
             await this.play(this.autoKeys[this.audioPlay.position].key);
             await wait(this.autoKeys[this.audioPlay.position].interval);
             this.audioPlay.position++;
@@ -232,6 +252,7 @@ export default {
     async Reset() {
       this.audioPlay.status = "RESET";
       this.audioPlay.position = 0;
+      this.test = true;
     },
     animation(code) {
       this.pianoKeys.forEach((item) => {
@@ -239,7 +260,7 @@ export default {
           this.keyPress(item.keyboard);
           setTimeout(() => {
             this.keyNotPress(item.keyboard);
-          }, this.autoKeys[this.index].interval);
+          }, this.autoKeys[this.audioPlay.position].interval);
         }
       });
     },
@@ -289,7 +310,7 @@ export default {
 </script>
 <style>
 * {
-  backface-visibility: hidden;
+  box-sizing: border-box;
 }
 
 html,
@@ -373,6 +394,11 @@ h2 {
 }
 .active_white {
   transform: translate(0px, 0px);
+  background-color: #eee;
+}
+.playButton {
+  width: 50px;
+  height: 30px;
   background-color: #eee;
 }
 </style>
