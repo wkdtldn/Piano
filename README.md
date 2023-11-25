@@ -15,7 +15,6 @@ https://siwoo-piano.vercel.app/
   - 집에 피아노가 있었지만 너무 오래되어 소리를 먹는 키가 있어 만들어보고 싶었고
     악기를 전공하거나 따로 전문적으로 못하지만 직접 만들어서 쓰고 싶을때 쓸 수 있게 개발해보고 싶었기 때문이다.
 
-- 활용한 언어
-  ***
-  [![forthebadge](https://forthebadge.com/images/badges/made-with-vue.svg)](https://forthebadge.com) &nbsp;
+## 활용한 언어
+ [![forthebadge](https://forthebadge.com/images/badges/made-with-vue.svg)](https://forthebadge.com) &nbsp;
   [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com) &nbsp;
