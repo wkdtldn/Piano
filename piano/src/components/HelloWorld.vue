@@ -288,6 +288,7 @@ export default {
         "https://awiclass.monoame.com/pianosound/set/" + code + ".wav"
       );
       audio.play();
+      
     },
     kbPlay(key) {
       let keyIndex;
